@@ -10,11 +10,10 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create("attendance_recordes", function (Blueprint $table) {
+        Schema::create("leaderboard_snapshots", function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->boolean("attended");
-            $table->foreignId("learner_id")->constrained();
+            $table->timestamp("created_at");
+            $table->json("leaderboard");
         });
     }
 
@@ -23,6 +22,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists("attendance_recordes");
+        Schema::dropIfExists("leader_board_snapshots");
     }
 };

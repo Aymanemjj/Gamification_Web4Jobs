@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->string("name");
             $table->string("location");
-            $table->integer("student_count")->default(0);
+            $table->integer("learner_count")->default(0);
         });
     }
 
