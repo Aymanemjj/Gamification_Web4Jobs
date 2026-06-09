@@ -10,13 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create("event_types", function (Blueprint $table) {
+        Schema::create("metric_keys", function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignId("platform_id")->constrained();
             $table->string("name");
-            $table->integer("points");
-            $table->string("limit_types");
-            $table->integer("limit-value");
+            $table->json("rules");
         });
     }
 

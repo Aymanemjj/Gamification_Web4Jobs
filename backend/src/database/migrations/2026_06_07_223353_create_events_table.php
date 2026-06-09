@@ -18,7 +18,7 @@ return new class extends Migration {
             $table
                 ->foreignId("event_types_id")
                 ->references("id")
-                ->on("event_types");
+                ->on("metric_keys");
             $table->foreignId("platform_id")->constrained();
         });
     }
