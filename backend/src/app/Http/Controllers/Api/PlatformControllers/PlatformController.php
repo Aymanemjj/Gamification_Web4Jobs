@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\PlatformControllers;
 
+use App\Http\Controllers\Controller;
 use Exception;
 use Illuminate\Http\Request;
 use App\Services\PlatformService;
