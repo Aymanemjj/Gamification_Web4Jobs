@@ -4,6 +4,7 @@ namespace App\Models\Events;
 
 use App\Interfaces\EventsInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class AttendanceCenterEvent implements EventsInterface
 {
@@ -23,7 +24,7 @@ class AttendanceCenterEvent implements EventsInterface
 
     public string $center_id;
 
-    public string $happened_at;
+    public Carbon $happened_at;
 
     public array $metadata;
 }

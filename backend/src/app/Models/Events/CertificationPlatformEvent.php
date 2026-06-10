@@ -4,6 +4,7 @@ namespace App\Models\Events;
 
 use App\Interfaces\EventsInterface;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class CertificationPlatformEvent implements EventsInterface
 {
@@ -24,7 +25,7 @@ class CertificationPlatformEvent implements EventsInterface
     public string $certification_id;
     public string $block_id;
 
-    public string $happened_at;
+    public Carbon $happened_at;
 
     public array $metadata;
 }
