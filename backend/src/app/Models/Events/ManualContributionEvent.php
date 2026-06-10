@@ -2,11 +2,12 @@
 
 namespace App\Models\Events;
 
-use App\Interfaces\EventsInterface;
+use App\Interfaces\SourceEventModelInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
-class ManualContributionEvent implements EventsInterface
+
+class ManualContributionEvent implements SourceEventModelInterface
 {
     public string $source = "manual_contribution";
     public string $event_type;
@@ -26,4 +27,29 @@ class ManualContributionEvent implements EventsInterface
     public Carbon $happened_at;
 
     public array $metadata;
+
+
+    
+    public function resolve(): void
+    {
+	throw new \BadMethodCallException('Not implemented');
+    }
+
+    
+    public function validate(): bool
+    {
+	throw new \BadMethodCallException('Not implemented');
+    }
+
+    
+    public function getType(): string
+    {
+	throw new \BadMethodCallException('Not implemented');
+    }
+    
+    
+    public function getPayload(): array
+    {
+	throw new \BadMethodCallException('Not implemented');
+    }
 }

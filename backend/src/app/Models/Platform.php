@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use App\Models\Learner;
-use App\Models\Event;
+use App\Models\Events\BasicEvent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;

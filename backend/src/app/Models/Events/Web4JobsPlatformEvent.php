@@ -2,14 +2,15 @@
 
 namespace App\Models\Events;
 
-use App\Interfaces\EventsInterface;
+use App\Interfaces\SourceEventModelInterface;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Platform;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\MetricKey;
 use Illuminate\Support\Carbon;
 
-class Web4JobsEvent implements EventsInterface
+
+class Web4JobsPlatformEvent implements SourceEventModelInterface
 {
     public string $source = "web4jobs_progress";
     public string $event_type;
@@ -29,8 +30,27 @@ class Web4JobsEvent implements EventsInterface
 
     public array $metadata;
 
+    
     public function resolve(): void
     {
-        return;
+	throw new \BadMethodCallException('Not implemented');
+    }
+
+    
+    public function validate(): bool
+    {
+	throw new \BadMethodCallException('Not implemented');
+    }
+
+    
+    public function getType(): string
+    {
+	throw new \BadMethodCallException('Not implemented');
+    }
+    
+    
+    public function getPayload(): array
+    {
+	throw new \BadMethodCallException('Not implemented');
     }
 }

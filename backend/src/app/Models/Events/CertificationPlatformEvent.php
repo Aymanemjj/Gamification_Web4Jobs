@@ -2,11 +2,12 @@
 
 namespace App\Models\Events;
 
-use App\Interfaces\EventsInterface;
+use App\Interfaces\SourceEventModelInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 
-class CertificationPlatformEvent implements EventsInterface
+
+class CertificationPlatformEvent implements SourceEventModelInterface
 {
     public string $source = "certification_platform";
     public string $event_type;
@@ -28,4 +29,30 @@ class CertificationPlatformEvent implements EventsInterface
     public Carbon $happened_at;
 
     public array $metadata;
+
+
+
+    
+    public function resolve(): void
+    {
+	throw new \BadMethodCallException('Not implemented');
+    }
+
+    
+    public function validate(): bool
+    {
+	throw new \BadMethodCallException('Not implemented');
+    }
+
+    
+    public function getType(): string
+    {
+	throw new \BadMethodCallException('Not implemented');
+    }
+    
+    
+    public function getPayload(): array
+    {
+	throw new \BadMethodCallException('Not implemented');
+    }
 }
