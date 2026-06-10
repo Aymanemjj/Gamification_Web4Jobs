@@ -5,8 +5,9 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 
-class PlatformEventRequest extends FormRequest
+class Web4JobsEventRequest extends FormRequest
 {
     public function authorize(): bool
     {
@@ -15,31 +16,39 @@ class PlatformEventRequest extends FormRequest
 
     public function rules(): array
     {
-
-        $platform = \App\Models\Platform::where('name', $this->input('source'))->first();
+        $platform = \App\Models\Platform::where(
+            "name",
+            $this->input("source"),
+        )->first();
         return [
-            "source" => "required|string|in:web4jobs_progress",
+            "source" => "required|string|in:platforms.name",
             "event_type" => "required|string|max:255",
-            'learner_email'    => [
-                'required', 'email', 'max:255',
-                Rule::exists('learners', 'email'),
+            "learner_email" => [
+                "required",
+                "email",
+                "max:255",
+                Rule::exists("learners", "email"),
             ],
-            'external_user_id' => [
-                'required', 'string', 'max:255',
-                Rule::exists('learner_platform_accounts', 'external_id')
-                    ->where('platform_id', $platform?->id),
+            "external_user_id" => [
+                "required",
+                "string",
+                "max:255",
+                Rule::exists("learner_platform_accounts", "external_id")->where(
+                    "platform_id",
+                    $platform?->id,
+                ),
             ],
-            "metric_key" => "required|string|max:255",
+            "metric_key" => "required|string|max:255|in:metric_keys.name",
             "value" => "required|numeric",
             "previous_value" => "nullable|numeric",
             "entity_type" => "required|string|max:255",
             "entity_id" => "required|string|max:255",
             "happened_at" => "required|date_format:Y-m-d\TH:i:s\Z",
-            'dedupe_key' => 'required|string|max:500|unique:events,dedupe_key',
+            "dedupe_key" => "required|string|max:500|unique:events,dedupe_key",
 
-            "metadata" => "required|array",
-            "metadata.course_name" => "required|string|max:255",
-            "metadata.module_name" => "required|string|max:255",
+            "metadata" => "array",
+            //"metadata.course_name" => "required|string|max:255",
+            //"metadata.module_name" => "required|string|max:255",
             "metadata.progress_unit" =>
                 "required|string|in:percentage,count,score",
         ];
@@ -82,24 +91,30 @@ class PlatformEventRequest extends FormRequest
     {
         $errors = $validator->errors();
 
-        if ($errors->has('dedupe_key')) {
+        if ($errors->has("dedupe_key")) {
             throw new HttpResponseException(
-                response()->json([
-                    'success' => true,
-                    'message' => 'Duplicate event ignored',
-                    'data' => [
-                        'dedupe_key' => $this->input('dedupe_key'),
-                        'status'     => 'duplicate_ignored',
+                response()->json(
+                    [
+                        "success" => true,
+                        "message" => "Duplicate event ignored",
+                        "data" => [
+                            "dedupe_key" => $this->input("dedupe_key"),
+                            "status" => "duplicate_ignored",
+                        ],
                     ],
-                ], 200)
+                    200,
+                ),
             );
         }
 
         throw new HttpResponseException(
-            response()->json([
-                'success' => false,
-                'message' => 'Invalid request',
-            ], 422)
+            response()->json(
+                [
+                    "success" => false,
+                    "message" => "Invalid request",
+                ],
+                422,
+            ),
         );
     }
 }
