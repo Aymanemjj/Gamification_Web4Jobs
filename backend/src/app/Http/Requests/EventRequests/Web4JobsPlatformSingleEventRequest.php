@@ -1,13 +1,16 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\EventRequests;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
+use App\Interfaces\SourceSingleEventRequestInterface;
+use App\Interfaces\SourceEventDTOInterface;
 
-class Web4JobsEventRequest extends FormRequest
+class Web4JobsPlatformSingleEventRequest extends FormRequest implements
+    SourceSingleEventRequestInterface
 {
     public function authorize(): bool
     {
@@ -116,5 +119,8 @@ class Web4JobsEventRequest extends FormRequest
                 422,
             ),
         );
+    }
+    public function toDTO(): SourceEventDTOInterface {
+        throw new \BadMethodCallException('Not implemented');
     }
 }
