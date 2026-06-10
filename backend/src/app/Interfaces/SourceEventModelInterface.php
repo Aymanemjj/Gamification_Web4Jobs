@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface EventsInterface
+interface SourceEventModelInterface
 {
     public function resolve(): void;
     public function validate(): bool;
