@@ -11,18 +11,17 @@ class PlatformsSeeder extends Seeder
     {
         $platforms = [
             [
-                'platform_name' => 'web4jobs_progress',
-                'weight'        => 30,
-                'key'           => 'web4jobs_progress',
+                "name" => "web4jobs_progress",
+                "weight" => 30,
+                "key" => "web4jobs_progress",
             ],
-
         ];
 
         foreach ($platforms as $platform) {
-            DB::table('platforms')->insert([
+            DB::table("platforms")->insert([
                 ...$platform,
-                'created_at' => now(),
-                'updated_at' => now(),
+                "created_at" => now(),
+                "updated_at" => now(),
             ]);
         }
     }

@@ -12,13 +12,14 @@ return new class extends Migration {
     {
         Schema::create("events", function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
-            $table->string("happened_at");
+            $table->timestamp("happened_at");
+            $table->string("event_type");
             $table->string("dedub_key");
             $table
-                ->foreignId("event_types_id")
+                ->foreignId("metric_key_id")
                 ->references("id")
                 ->on("metric_keys");
+            $table->foreignId("learner_id")->constrained();
             $table->foreignId("platform_id")->constrained();
         });
     }
