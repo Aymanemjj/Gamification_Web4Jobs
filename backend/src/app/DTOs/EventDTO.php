@@ -3,36 +3,49 @@
 namespace App\DTOs;
 
 use App\Http\Requests\Web4JobsEventRequest;
+use App\Interfaces\BasicDtoInterface;
+use App\Models\EventType;
+use App\Models\Learner;
 use App\Models\MetricKey;
 use App\Models\Platform;
 
-readonly class EventDTO
+readonly class EventDTO implements BasicDtoInterface
 {
     public function __construct(
         public string $happenedAt,
         public string $dedupeKey,
-        public int $metricKeyId,
-        public int $platformId,
+        public EventType $eventType,
+        public MetricKey $metricKey,
+        public Platform $platform,
+        public Learner $learner,
     ) {}
 
-    public static function fromRequest(Web4JobsEventRequest $request): self
+    public static function make(array $data): self
     {
         return new self(
-            happenedAt: $request->input("happened_at"),
-            dedupeKey: $request->input("dedupe_key"),
-            metricKeyId: MetricKey::where("name", $request->metric_key)->first()
-                ->id,
-            platformId: Platform::where("name", $request->source)->first()->id,
+            happenedAt: $data['happened_at'],
+            dedupeKey: $data['dedupe_key'],
+            eventType: EventType::where('type', $data['event_type'])->firstOrFail(),
+            metricKey: MetricKey::where('name', $data['metric_key'])->firstOrFail(),
+            platform: Platform::where('name', $data['source'])->firstOrFail(),
+            learner: Learner::where('email', $data['learner_email'])->firstOrFail(),
         );
+    }
+
+    public static function collection(array $data): array
+    {
+        return array_map(fn($item) => self::make($item), $data);
     }
 
     public function toArray(): array
     {
         return [
-            "happened_at" => $this->happenedAt,
-            "dedub_key" => $this->dedupeKey,
-            "metric_key_id" => $this->metricKeyId,
-            "platform_id" => $this->platformId,
+            'happened_at'   => $this->happenedAt,
+            'dedupe_key'    => $this->dedupeKey,
+            'event_type_id' => $this->eventType->id,
+            'metric_key_id' => $this->metricKey->id,
+            'platform_id'   => $this->platform->id,
+            'learner_id'    => $this->learner->id,
         ];
     }
 }

@@ -4,12 +4,12 @@ namespace App\Services;
 
 use App\Interfaces\SourceEventDTOInterface;
 use App\Interfaces\SourceEventServiceInterface;
+use App\Models\Events\BasicEvent;
 
-
-class ManualContributionEventService implements SourceEventServiceInterface
+class CertificationPlatformEventService implements SourceEventServiceInterface
 {
     
-    public function handleSingle(SourceEventDTOInterface $dto): void
+    public function handleSingle(SourceEventDTOInterface $dto): BasicEvent
     {
 	throw new \BadMethodCallException('Not implemented');
     }
@@ -18,5 +18,10 @@ class ManualContributionEventService implements SourceEventServiceInterface
     public function handleBatch(array $events): void
     {
 	throw new \BadMethodCallException('Not implemented');
+    }
+
+    public function process(SourceEventDTOInterface $dto): void
+    {
+        
     }
 }

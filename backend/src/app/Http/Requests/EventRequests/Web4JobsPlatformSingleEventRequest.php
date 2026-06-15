@@ -2,12 +2,13 @@
 
 namespace App\Http\Requests\EventRequests;
 
+use App\DTOs\SourcesEvents\Web4JobsPlatformEventDTO;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
 use App\Interfaces\SourceSingleEventRequestInterface;
-use App\Interfaces\SourceEventDTOInterface;
+
 
 class Web4JobsPlatformSingleEventRequest extends FormRequest implements
     SourceSingleEventRequestInterface
@@ -24,8 +25,16 @@ class Web4JobsPlatformSingleEventRequest extends FormRequest implements
             $this->input("source"),
         )->first();
         return [
-            "source" => "required|string|in:platforms.name",
-            "event_type" => "required|string|max:255",
+            "source" => "required|string|in:web4jobs_progress",
+            "event_type" => [
+                "required",
+                "string",
+                "max:255",
+                Rule::exists("event_types", "type")->where(
+                    "platform_id",
+                    $platform?->id,
+                ),
+            ],
             "learner_email" => [
                 "required",
                 "email",
@@ -41,7 +50,7 @@ class Web4JobsPlatformSingleEventRequest extends FormRequest implements
                     $platform?->id,
                 ),
             ],
-            "metric_key" => "required|string|max:255|in:metric_keys.name",
+            "metric_key" => "required|string|max:255|exists:metric_keys,name",
             "value" => "required|numeric",
             "previous_value" => "nullable|numeric",
             "entity_type" => "required|string|max:255",
@@ -120,7 +129,9 @@ class Web4JobsPlatformSingleEventRequest extends FormRequest implements
             ),
         );
     }
-    public function toDTO(): SourceEventDTOInterface {
-        throw new \BadMethodCallException('Not implemented');
+    public function toDTO(): Web4JobsPlatformEventDTO
+    {
+        $data = $this->validated();
+        return Web4JobsPlatformEventDTO::make($data);
     }
 }

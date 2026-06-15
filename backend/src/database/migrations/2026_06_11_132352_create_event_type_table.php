@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('event_type', function (Blueprint $table) {
+        Schema::create('event_types', function (Blueprint $table) {
             $table->id();
             $table->string('type');
             $table->foreignId("platform_id")->constrained();

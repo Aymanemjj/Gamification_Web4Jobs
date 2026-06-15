@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Http\Resources\BadgeResource;
 use App\Models\Badge;
+use App\Models\Learner;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 
@@ -54,5 +55,11 @@ class BadgeService
     {
         $badge->delete();
         return response()->noContent();
+    }
+
+    public static function reCheck(Learner $learner){
+        {
+            
+        }
     }
 }
