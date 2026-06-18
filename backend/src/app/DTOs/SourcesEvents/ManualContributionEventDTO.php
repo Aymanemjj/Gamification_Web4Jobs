@@ -1,123 +1,71 @@
 <?php
 
-namespace App\DTOs;
+namespace App\DTOs\SourcesEvents;
 
 use App\Interfaces\SourceEventDTOInterface;
+use App\Models\EventType;
+use App\Models\MetricKey;
+use App\Models\Platform;
+use Illuminate\Support\Carbon;
 
-class ManualContributionEventDTO implements SourceEventDTOInterface
+readonly class ManualContributionEventDTO implements SourceEventDTOInterface
 {
-    public string $source;
-    public string $event_type;
-    public string $dedupe_key;
-BasicEvent
+    public function __construct(
+        public Platform   $source,
+        public EventType  $event_type,
+        public string     $dedupe_key,
+        public string     $external_user_id,
+        public string     $learner_email,
+        public MetricKey  $metric_key,
+        public float      $value,
+        public ?float     $previous_value,
+        public string     $entity_type,
+        public string     $entity_id,
+        public string     $center_id,
+        public Carbon     $happened_at,
+        public array      $metadata,
+    ) {}
 
-➜ git status
-On branch dev
-Your branch is ahead of 'origin/dev' by 1 commit.
-  (use "git push" to publish your local commits)
-
-Changes not staged for commit:
-  (use "git add/rm <file>..." to update what will be committed)
-  (use "git restore <file>..." to discard changes in working directory)
-	deleted:    app/DTOs/AttendanceCenterEventDTO.php
-	deleted:    app/DTOs/CertificationPlatformEventDTO.php
-	deleted:    app/DTOs/DiscordEventDTO.php
-	modified:   app/DTOs/EventDTO.php
-	deleted:    app/DTOs/InsertionPlatformEventDTO.php
-	deleted:    app/DTOs/ManualContributionEventDTO.php
-	deleted:    app/DTOs/Web4JobsPlatformEventDTO.php
-	modified:   app/Http/Controllers/Api/PlatformControllers/Web4JobsPlatformEventController.php
-	modified:   app/Http/Requests/EventRequests/Web4JobsPlatformSingleEventRequest.php
-	modified:   app/Interfaces/SourceEventDTOInterface.php
-	modified:   app/Interfaces/SourceEventServiceInterface.php
-	modified:   app/Models/Events/BasicEvent.php
-	deleted:    app/Services/AttendanceCenterEventService.php
-	modified:   app/Services/BadgeService.php
-	deleted:    app/Services/CertificationPlatformEventService.php
-	deleted:    app/Services/DiscordEventService.php
-	modified:   app/Services/EventService.php
-	deleted:    app/Services/InsertionPlatformEventService.php
-	deleted:    app/Services/ManualContributionEventService.php
-	deleted:    app/Services/Web4JobsPlatformEventService.php
-	modified:   database/migrations/2026_06_11_132352_create_event_type_table.php
-
-Untracked files:
-  (use "git add <file>..." to include in what will be committed)
-	../.idea/
-	app/DTOs/SourcesEvents/
-	app/Interfaces/BasicDtoInterface.php
-	app/Jobs/
-	app/Services/LeaderBoardService.php
-	app/Services/PointCalculationEngine.php
-	app/Services/SourcesSerivces/
-    public string $external_user_id;
-    public string $learner_email;
-    
-    public string $metric_key;
-    public float $value;
-    public ?float $previous_value = null;
-    
-    public string $happened_at;
-    
-    public array $metadata;
-    
-    public static function fromRequest(array $data): static
+    public static function make(array $data): static
     {
-        throw new \BadMethodCallException('Not implemented');
+        return new self(
+            source:           Platform::where('name', $data['source'])->firstOrFail(),
+            event_type:       EventType::where('type', $data['event_type'])->firstOrFail(),
+            dedupe_key:       $data['dedupe_key'],
+            external_user_id: $data['external_user_id'],
+            learner_email:    $data['learner_email'],
+            metric_key:       MetricKey::where('name', $data['metric_key'])->firstOrFail(),
+            value:            (float) $data['value'],
+            previous_value:   isset($data['previous_value']) ? (float) $data['previous_value'] : null,
+            entity_type:      $data['entity_type'],
+            entity_id:        $data['entity_id'],
+            center_id:        $data['center_id'],
+            happened_at:      Carbon::parse($data['happened_at']),
+            metadata:         $data['metadata'] ?? [],
+        );
     }
-    
+
+    public static function collection(array $data): array
+    {
+        return array_map(fn ($item) => self::make($item), $data);
+    }
+
     public function toArray(): array
     {
-        throw new \BadMethodCallException('Not implemented');
-    }
-    
-    public function getDedupeKey(): string
-    {
-        return $this->dedupe_key;
-    }
-    
-    public function getMetricKey(): string
-    {
-        return $this->metric_key;
-    }
-    
-    public function getExternalUserId(): string
-    {
-        return $this->external_user_id;
-    }
-    
-    public function getLearnerEmail(): string
-    {
-        return $this->learner_email;
-    }
-    
-    public function getSource(): string
-    {
-        return $this->source;
-    }
-    
-    public function getEventType(): string
-    {
-        return $this->event_type;
-    }
-    
-    public function getValue(): float
-    {
-        return $this->value;
-    }
-    
-    public function getPreviousValue(): ?float
-    {
-        return $this->previous_value;
-    }
-    
-    public function getHappenedAt(): string
-    {
-        return $this->happened_at;
-    }
-    
-    public function getMetadata(): array
-    {
-        return $this->metadata;
+        return [
+            'platform_id'      => $this->source->id,
+            'event_type_id'    => $this->event_type->id,
+            'dedupe_key'       => $this->dedupe_key,
+            'external_user_id' => $this->external_user_id,
+            'learner_email'    => $this->learner_email,
+            'metric_key_id'    => $this->metric_key->id,
+            'value'            => $this->value,
+            'previous_value'   => $this->previous_value,
+            'entity_type'      => $this->entity_type,
+            'entity_id'        => $this->entity_id,
+            'center_id'        => $this->center_id,
+            'happened_at'      => $this->happened_at->toIso8601String(),
+            'metadata'         => $this->metadata,
+        ];
     }
 }
