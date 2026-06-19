@@ -22,8 +22,9 @@ class Web4JobsPlatformSingleEventRequest extends FormRequest implements
     {
         $platform = \App\Models\Platform::where(
             "name",
-            $this->input("source"),
+            "web4jobs_progress",
         )->first();
+    
         return [
             "source" => "required|string|in:web4jobs_progress",
             "event_type" => [
