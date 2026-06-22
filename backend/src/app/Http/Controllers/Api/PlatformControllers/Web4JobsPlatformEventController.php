@@ -47,10 +47,28 @@ class Web4JobsPlatformEventController extends Controller implements
         }
     }
 
-
     public function handleBatch(SourceBatchEventRequestInterface $request): JsonResponse
-    {
-	throw new \BadMethodCallException('Not implemented');
-    }
+        {   
+            try {
+                $dtos = $request->toDTOCollection(); 
+                
+                $results = [];
+                foreach ($dtos as $dto) {
+                    $results[] = $this->web4jobsEventService->handleSingle($dto);
+                }
+    
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Batch of Web4Jobs events processed successfully',
+                    'count'   => count($results),
+                ], 201);
+    
+            } catch (Exception $e) {
+                return response()->json([
+                    'message' => 'An error occurred during batch processing',
+                    'error'   => $e->getMessage(),
+                ], 500);
+            }
+        }
 
 }
