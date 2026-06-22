@@ -2,26 +2,22 @@
 
 namespace App\Services;
 
+use App\DTOs\EventDTO;
 use App\Interfaces\SourceEventDTOInterface;
 use App\Interfaces\SourceEventServiceInterface;
+use App\Jobs\CalculatePoints;
 use App\Models\Events\BasicEvent;
 
 class InsertionPlatformEventService implements SourceEventServiceInterface
 {
     
-    public function handleSingle(SourceEventDTOInterface $dto): BasicEvent
-    {
-	throw new \BadMethodCallException('Not implemented');
-    }
-
+    public function __construct(private EventService $eventService) {}
     
-    public function handleBatch(array $events): void
-    {
-	throw new \BadMethodCallException('Not implemented');
-    }
-
-    public function process(SourceEventDTOInterface $dto): void
-    {
+    public function handleSingle(SourceEventDTOInterface $dto): BasicEvent {
+        $eventDto = EventDTO::make($dto->toArray());
+        $event = $this->eventService->createEvent($eventDto);    
+        CalculatePoints::dispatch($dto);
+        return $event;
         
     }
 }

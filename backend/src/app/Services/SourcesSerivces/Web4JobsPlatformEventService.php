@@ -22,13 +22,4 @@ class Web4JobsPlatformEventService implements SourceEventServiceInterface
         
     }
 
-    public function handleBatch(array $events): void
-    {
-        throw new \BadMethodCallException("Not implemented");
-    }
-
-    public function process(SourceEventDTOInterface $dto): void
-    {
-        
-    }
 }
