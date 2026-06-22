@@ -8,11 +8,11 @@ use App\Models\ScoreTransaction;
 
 class PointCalculationEngine
 {
-    public function calculate(SourceEventDTOInterface $dto)
+    public static function calculate(SourceEventDTOInterface $dto)
     {
         $data = $dto->toArray();
-
-        $points = $this->getPoints($dto);
+        $self = new self();
+        $points = $self->getPoints($dto);
         ScoreTransaction::create([
             "attributed_points"=> $points,
             "learner_id"=>$dto->learner->id,
