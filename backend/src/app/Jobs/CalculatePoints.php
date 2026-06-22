@@ -5,6 +5,7 @@ namespace App\Jobs;
 use App\DTOs\EventDTO;
 use App\Interfaces\SourceEventDTOInterface;
 use App\Interfaces\SourceEventServiceInterface;
+use App\Services\PointCalculationEngine;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Log;
@@ -20,25 +21,23 @@ class CalculatePoints implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public readonly SourceEventDTOInterface $dto)
-    {
-        //
-    }
+    public function __construct(public readonly SourceEventDTOInterface $dto) {}
 
     /**
      * Execute the job.
      */
-    public function handle(SourceEventServiceInterface $service): void
+    public function handle(SourceEventDTOInterface $dto): void
     {
-        $service->process($this->dto);
+        PointCalculationEngine::calculate($dto);
+        return;
     }
 
     public function failed(\Throwable $e): void
     {
-        Log::error('ProcessPlatformEvent failed', [
-            'event_key'  => $this->dto->metricKey,
-            'user_id'    => $this->dto->userId,
-            'error'      => $e->getMessage(),
+        Log::error("ProcessPlatformEvent failed", [
+            "event_key" => $this->dto->metricKey,
+            "user_id" => $this->dto->userId,
+            "error" => $e->getMessage(),
         ]);
     }
 }
