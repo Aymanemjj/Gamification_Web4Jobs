@@ -13,9 +13,12 @@ use App\Models\AttendanceRecord;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Laravel\Sanctum\HasApiTokens;
 
 class Learner extends Model
 {
+    use HasApiTokens;
+    
     protected $fillable = [
         "firstname",
         "lastname",
