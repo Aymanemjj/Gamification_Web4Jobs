@@ -18,6 +18,7 @@ class PointCalculationEngine
             "learner_id"=>$dto->learner->id,
         ]);
 
+        LeagueService::reCheck($dto->learner);
         BadgeService::reCheck($dto->learner);
     }
 
