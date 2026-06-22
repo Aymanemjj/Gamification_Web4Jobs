@@ -9,6 +9,5 @@ interface SourceEventServiceInterface
 {
     public function handleSingle(SourceEventDTOInterface $dto): BasicEvent;
     /** @param SourceEventDTOInterface[] $events */
-    public function handleBatch(array $events): void;
-    public function process(SourceEventDTOInterface $dto):void;
+    //public function handleBatch(array $events): void;
 }
