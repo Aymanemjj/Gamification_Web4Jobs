@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->string("title");
             $table->string("color");
-            $table->integer("max_xp");
+            $table->integer("min_xp");
         });
     }
 

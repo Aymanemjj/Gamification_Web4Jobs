@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->timestamps();
             $table->boolean("attended");
-            $table->foreignId("learner_id")->constrained();
+            $table->foreignId("user_id")->where("role_id", '1')->constrained();
             $table->foreignId("center_id")->constrained();
         });
     }

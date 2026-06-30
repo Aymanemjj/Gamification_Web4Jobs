@@ -10,12 +10,12 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create("learner_platform_accounts", function (
+        Schema::create("user_platform_accounts", function (
             Blueprint $table,
         ) {
             $table->integer("external_id");
             $table->foreignId("platform_id")->constrained();
-            $table->foreignId("learner_id")->constrained();
+            $table->foreignId("user_id")->constrained();
         });
     }
 
@@ -24,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists("learner_platform_accounts");
+        Schema::dropIfExists("us_platform_accounts");
     }
 };

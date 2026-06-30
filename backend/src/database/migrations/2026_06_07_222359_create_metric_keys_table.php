@@ -24,6 +24,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists("event_scoring_rules");
+        Schema::dropIfExists("metric_keys");
     }
 };

@@ -18,7 +18,7 @@ return new class extends Migration {
             $table->string("affected_table");
             $table->string("action");
             $table->string("justification");
-            $table->foreignId("mods_id")->constrained();
+            $table->foreignId("user_id")->constrained();
         });
     }
 

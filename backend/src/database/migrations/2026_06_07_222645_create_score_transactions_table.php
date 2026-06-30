@@ -14,7 +14,8 @@ return new class extends Migration {
             $table->id();
             $table->timestamps();
             $table->integer("attributed_points");
-            $table->foreignId("learner_id")->constrained();
+            $table->string("details");
+            $table->foreignId("user_id")->constrained();
         });
     }
 
