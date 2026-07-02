@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->timestamp("happened_at");
             $table->string("event_type_id")->references("id")->on("event_types");
-            $table->string("dedub_key");
+            $table->string("dedupe_key");
             $table
                 ->foreignId("metric_key_id")
                 ->references("id")

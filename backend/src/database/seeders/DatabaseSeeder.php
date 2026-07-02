@@ -11,6 +11,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PlatformsSeeder::class,
             MetricKeysSeeder::class,
+            EventTypeSeeder::class,
+            MetricKeySeeder::class
         ]);
     }
 }
