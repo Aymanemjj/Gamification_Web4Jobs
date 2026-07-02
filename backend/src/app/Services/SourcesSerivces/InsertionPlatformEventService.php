@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\SourcesServices;
 
 use App\DTOs\EventDTO;
 use App\Interfaces\SourceEventDTOInterface;
 use App\Interfaces\SourceEventServiceInterface;
 use App\Jobs\CalculatePoints;
 use App\Models\Events\BasicEvent;
+use App\Services\EventService;
 
 class InsertionPlatformEventService implements SourceEventServiceInterface
 {

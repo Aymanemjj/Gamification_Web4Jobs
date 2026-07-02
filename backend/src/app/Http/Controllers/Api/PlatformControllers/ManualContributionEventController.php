@@ -22,7 +22,7 @@ class ManualContributionEventController extends Controller implements
     {
         try{
             $dto = $request->toDTO();
-            $event = $this->manualContributionEventService->handleBatch($dto);
+            $event = $this->manualContributionEventService->handleSingle($dto);
 
             return response()->json([
                           'success' => true,
@@ -54,7 +54,7 @@ class ManualContributionEventController extends Controller implements
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Batch of Manual contribution events processed successfully',
+                    'message' => 'Batch of Manual contributioni events processed successfully',
                     'count'   => count($results),
                 ], 201);
 

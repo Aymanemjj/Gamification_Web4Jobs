@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Resources\LeagueResource;
 use App\Models\League;
 use App\Models\Learner;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;
 
@@ -57,18 +58,18 @@ class LeagueService
         return response()->noContent();
     }
 
-    public static function reCheck(Learner $learner): void{
-        $xp = $learner->xp;
+    public static function reCheck(User $user): void{
+        $xp = $user->stats->xp;
 
-        $league = League::where('max_xp', '>', $xp)
-            ->orderBy('max_xp', 'asc')
+        $league = League::where('min_xp', '<=', $xp)
+            ->orderByDesc('min_xp')
             ->first();
 
         if($league){
             $league = League::orderBy("max_xp", "desc")->first();
         }
 
-        $learner->league_id = $league->id;
-        $learner->save();
+        $user->league_id = $league->id;
+        $user->save();
     }
 }

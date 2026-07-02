@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Interfaces\SourceBatchEventRequestInterface;
 use App\Interfaces\SourceEventControllerInterface;
 use App\Interfaces\SourceSingleEventRequestInterface;
-use App\Services\InsertionPlatformEventService;
+use App\Services\SourcesServices\InsertionPlatformEventService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 

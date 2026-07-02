@@ -89,7 +89,7 @@ class AttendanceCenterBatchEventRequest extends FormRequest implements
             "*.entity_id.required" => "Entity ID is required.",
             "*.happened_at.required" => "Event timestamp is required.",
             "*.happened_at.date_format" =>
-                "Timestamp must be ISO 8601 format (e.g. 2026-05-21T14:30:00Z).",
+            "Timestamp must be ISO 8601 format (e.g. 2026-05-21T14:30:00Z).",
             "*.dedupe_key.required" => "Dedupe key is required.",
             "*.metadata.array" => "Metadata must be an object.",
         ];
@@ -109,7 +109,6 @@ class AttendanceCenterBatchEventRequest extends FormRequest implements
         );
     }
 
-    #[Override]
     public function toDTOCollection(): array
     {
         $data = $this->validated();

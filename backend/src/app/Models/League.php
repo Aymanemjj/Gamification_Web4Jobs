@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class League extends Model
 {
-    protected $fillable = ["title", "color", "max_xp"];
+    protected $fillable = ["title", "color", "min_xp"];
 
     /** @return HasMany<Learner, League> */
-    public function learners(): HasMany
+    public function users(): HasMany
     {
-        return $this->hasMany(Learner::class);
+        return $this->hasMany(User::class);
     }
 }

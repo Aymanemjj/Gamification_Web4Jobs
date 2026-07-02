@@ -6,5 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class LeaderboardSnapshot extends Model
 {
-    protected $fillable = ["date", "leaderboard"];
+    public $timestamps = false;
+
+    protected $fillable = ['leaderboard', 'created_at'];
+
+    protected $casts = [
+        'leaderboard' => 'array',
+        'created_at'  => 'datetime',
+    ];
 }

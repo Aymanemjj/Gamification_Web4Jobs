@@ -4,8 +4,9 @@ namespace App\DTOs;
 
 use App\Interfaces\BasicDtoInterface;
 use App\Models\Platform;
+use JsonSerializable;
 
-readonly class EventTypeDTO implements BasicDtoInterface
+readonly class EventTypeDTO implements BasicDtoInterface , JsonSerializable
 {
     public function __construct(
         public string $type,
@@ -31,5 +32,10 @@ readonly class EventTypeDTO implements BasicDtoInterface
             'type'        => $this->type,
             'platform_id' => $this->platform->id,
         ];
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

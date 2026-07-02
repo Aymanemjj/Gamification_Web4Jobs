@@ -15,7 +15,9 @@ services:
 
   # Web Server (Using Built-in PHP server targeting the /public directory)
   webserver:
-    image: php:8.2-cli
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: laravel_web
     restart: unless-stopped
     ports:
@@ -27,7 +29,7 @@ services:
     depends_on:
       - app
     networks:
-      - laravel_network
+      - laravel_network  
 
   # MariaDB Database
   db:

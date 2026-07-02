@@ -13,9 +13,10 @@ use App\Models\AttendanceRecord;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Laravel\Sanctum\HasApiTokens;
 
-class Learner extends Model
+class User extends Model
 {
     use HasApiTokens;
     
@@ -25,30 +26,22 @@ class Learner extends Model
         "age",
         "email",
         "password",
-        "xp",
-        "league_id",
-        "group_id",
-        "center_id",
+        "role"
     ];
 
-    /** @return BelongsTo<League, Learner> */
-    public function league(): BelongsTo
+    public function role(): BelongsTo
     {
-        return $this->belongsTo(League::class);
+        return $this->belongsTo(Role::class);
     }
 
-    /** @return BelongsTo<Group, Learner> */
-    public function group(): BelongsTo
+    public function stats(): HasOne
     {
-        return $this->belongsTo(Group::class);
+        return $this->hasOne(UserStats::class);
     }
-
-    /** @return BelongsTo<Center, Learner> */
-    public function center(): BelongsTo
+    public function manualInterventions(): HasMany
     {
-        return $this->belongsTo(Center::class);
+        return $this->hasMany(ManualInterventionHistory::class);
     }
-
     /** @return HasMany<ScoreTransaction, Learner> */
     public function scoreTransactions(): HasMany
     {

@@ -8,12 +8,12 @@ use App\Models\Center;
 
 class AttendanceRecord extends Model
 {
-    protected $fillable = ["attended", "center_id", "learner_id"];
+    protected $fillable = ["attended", "center_id", "user_id"];
 
     /** @return BelongsTo<Learner, AttendanceRecord> */
-    public function learner(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Learner::class);
+        return $this->belongsTo(User::class);
     }
 
     /** @return BelongsTo<Center, AttendanceRecord> */

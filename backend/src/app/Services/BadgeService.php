@@ -57,9 +57,10 @@ class BadgeService
         return response()->noContent();
     }
 
-    public static function reCheck(Learner $learner){
-        {
-            
-        }
+    
+    public static function reCheck(Learner $learner): void{
+
+        
+        $learner->save();
     }
 }

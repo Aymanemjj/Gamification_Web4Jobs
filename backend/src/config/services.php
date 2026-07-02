@@ -34,5 +34,7 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
-
+    'w4jauth' => [
+            'url' => env('W4JAUTH_API_URL'),
+    ],
 ];

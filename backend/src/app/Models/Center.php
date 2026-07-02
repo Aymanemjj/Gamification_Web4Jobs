@@ -12,7 +12,7 @@ class Center extends Model
     /** @return HasMany<Learner, Center> */
     public function learners(): HasMany
     {
-        return $this->hasMany(Learner::class);
+        return $this->hasMany(User::class);
     }
 
     /** @return HasMany<AttendanceRecord, Center> */

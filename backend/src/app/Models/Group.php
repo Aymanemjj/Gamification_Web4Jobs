@@ -10,8 +10,8 @@ class Group extends Model
     protected $fillable = ["name"];
 
     /** @return HasMany<Learner, Group> */
-    public function learners(): HasMany
+    public function users(): HasMany
     {
-        return $this->hasMany(Learner::class);
+        return $this->hasMany(User::class);
     }
 }

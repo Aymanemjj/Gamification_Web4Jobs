@@ -10,9 +10,9 @@ class Role extends Model
 {
     protected $fillable = ["name", "permissions"];
 
-    /** @return HasMany<Mod, Role> */
-    public function mods(): HasMany
+
+    public function users(): HasMany
     {
-        return $this->hasMany(Mod::class);
+        return $this->hasMany(User::class);
     }
 }

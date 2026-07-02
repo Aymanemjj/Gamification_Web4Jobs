@@ -22,7 +22,7 @@ class Platform extends Model
     public function learners(): BelongsToMany
     {
         return $this->belongsToMany(
-            Learner::class,
+            User::class,
             "learner_platform_accounts",
         )->withPivot("external_learner_id");
     }
