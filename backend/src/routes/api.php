@@ -6,7 +6,8 @@ use App\Http\Controllers\Api\PlatformControllers\DiscordEventController;
 use App\Http\Controllers\Api\PlatformControllers\InsertionPlatformEventController;
 use App\Http\Controllers\Api\PlatformControllers\Web4JobsPlatformEventController;
 use App\Http\Controllers\Api\PlatformControllers\ManualContributionEventController;
-use App\Http\Controllers\EventController;
+use App\Http\Controllers\Api\CenterController;
+use App\Http\Controllers\Api\EventController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -76,3 +77,58 @@ Route::middleware("PlatformAuth")->group(function () {
         "handleEventBatch",
     ])->name("events.attendance.batch");
 });
+
+
+Route::put("gamification/events/{id}/status", [
+    EventController::class,
+    "updateStatus",
+])->name("events.status.update");
+
+Route::delete("gamification/events/{id}", [
+    EventController::class,
+    "delete",
+])->name("events.delete");
+
+Route::get("gamification/events", [
+    EventController::class,
+    "getAllEvents",
+])->name("events.list");
+
+Route::get("gamification/events/{id}", [
+    EventController::class,
+    "getEventById",
+])->name("events.get");
+
+Route::get("gamification/centers", [
+    CenterController::class,
+    "index",
+])->name("centers.list");
+
+Route::get("gamification/centers/{id}", [
+    CenterController::class,
+    "show",
+])->name("centers.get");
+
+Route::post("gamification/centers", [
+    CenterController::class,
+    "create",
+])->name("centers.create");
+
+Route::put("gamification/centers/{id}", [
+    CenterController::class,
+    "update",
+])->name("centers.update");
+
+Route::delete("gamification/centers/{id}", [
+    CenterController::class,
+    "delete",
+])->name("centers.delete");
+
+Route::put("gamification/centers/{id}/add/{userId}", [
+    CenterController::class,
+    "addUser",
+])->name("centers.addUser");
+Route::put("gamification/centers/{id}/remove/{userId}", [
+    CenterController::class,
+    "removeUser",
+])->name("centers.removeUser");
