@@ -12,13 +12,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class BasicEvent extends Model
 {
     protected $table = 'events';
-
+    public $timestamps = false;
+    
     protected $fillable = [
         'happened_at',
         'event_type_id',
         'dedupe_key',
         'platform_id',
-        'learner_id',
+        'user_id',
         'metric_key_id',
     ];
 

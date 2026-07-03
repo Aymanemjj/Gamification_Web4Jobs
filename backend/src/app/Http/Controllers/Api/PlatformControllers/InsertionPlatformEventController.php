@@ -8,7 +8,7 @@ use App\Interfaces\SourceBatchEventRequestInterface;
 use App\Interfaces\SourceEventControllerInterface;
 use App\Interfaces\SourceSingleEventRequestInterface;
 use App\Services\EventService;
-use App\Services\SourcesServices\InsertionPlatformEventService;
+use App\Services\InsertionPlatformEventService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -34,7 +34,7 @@ class InsertionPlatformEventController extends Controller implements
                 'message' => 'Insertion platform event received successfully',
                 'data' => [
                     'event_id'  => $event->id,
-                    'learner_id' => $event->learner_id,
+                    'user_id' => $event->user_id,
                     'status'    => 'queued_for_scoring',
                 ],
             ], 201);

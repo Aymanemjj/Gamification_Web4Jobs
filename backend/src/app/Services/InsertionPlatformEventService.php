@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\SourcesServices;
+namespace App\Services;
 
 use App\DTOs\EventDTO;
 use App\Interfaces\SourceEventDTOInterface;

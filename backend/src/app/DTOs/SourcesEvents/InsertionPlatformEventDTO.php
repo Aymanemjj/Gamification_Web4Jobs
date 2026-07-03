@@ -51,12 +51,12 @@ readonly class InsertionPlatformEventDTO implements SourceEventDTOInterface
     public function toArray(): array
     {
         return [
-            'platform_id'      => $this->source->id,
-            'event_type_id'    => $this->event_type->id,
+            'platform'      => $this->source->name,
+            'event_type'    => $this->event_type->type,
             'dedupe_key'       => $this->dedupe_key,
             'external_user_id' => $this->external_user_id,
             'learner_email'    => $this->learner_email,
-            'metric_key_id'    => $this->metric_key->id,
+            'metric_key'    => $this->metric_key->name,
             'value'            => $this->value,
             'previous_value'   => $this->previous_value,
             'entity_type'      => $this->entity_type,

@@ -21,8 +21,8 @@ return new class extends Migration {
                 ->on("metric_keys");
             $table->foreignId("user_id")->constrained();
             $table->foreignId("platform_id")->constrained();
-            $table->boolean("accepted");
-            $table->string("reason");
+            $table->boolean("accepted")->default(false);
+            $table->string("reason")->nullable();
         });
     }
 

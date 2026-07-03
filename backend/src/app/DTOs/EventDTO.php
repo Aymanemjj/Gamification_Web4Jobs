@@ -27,7 +27,7 @@ readonly class EventDTO implements BasicDtoInterface
             dedupeKey: $data['dedupe_key'],
             eventType: EventType::where('type', $data['event_type'])->firstOrFail(),
             metricKey: MetricKey::where('name', $data['metric_key'])->firstOrFail(),
-            platform: Platform::where('name', $data['source'])->firstOrFail(),
+            platform: Platform::where('name', $data['platform'])->firstOrFail(),
             user: User::where('email', $data['learner_email'])->firstOrFail(),
         );
     }
