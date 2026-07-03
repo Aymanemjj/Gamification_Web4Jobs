@@ -1,0 +1,23 @@
+@import "tailwindcss";
+@theme {
+    --color-primary-hover: #6C52E0;
+    --color-primary-normal: #5B3FD6;
+    --color-primary-focused: #4A32B8;
+    --color-disabeled: #C1C1C1;
+    --color-muted:#7F7F7F;
+    --color-border:#e5e5e5;
+    --color-bg-light: #F7F5FF;
+    --color-bg-light-hover:#F7F5FF;
+
+    --color-bg-dark: #1E1E1E;
+    --color-bg-dark-hover:#171717;
+
+
+
+    --text-large: 32px;
+    --text-medium: 24px;
+    --text-small: 16px;
+    --text-smaller: 14px
+}
+
+@variant dark (&:where(.dark, .dark *));
