@@ -26,7 +26,8 @@ class User extends Model
         "age",
         "email",
         "password",
-        "role"
+        "role",
+        "active",
     ];
 
     public function role(): BelongsTo
@@ -42,30 +43,30 @@ class User extends Model
     {
         return $this->hasMany(ManualInterventionHistory::class);
     }
-    /** @return HasMany<ScoreTransaction, Learner> */
+    /** @return HasMany<ScoreTransaction, User> */
     public function scoreTransactions(): HasMany
     {
         return $this->hasMany(ScoreTransaction::class);
     }
 
-    /** @return HasMany<AttendanceRecord, Learner> */
+    /** @return HasMany<AttendanceRecord, User> */
     public function attendanceRecords(): HasMany
     {
         return $this->hasMany(AttendanceRecord::class);
     }
 
-    /** @return BelongsToMany<Badge, Learner> */
+    /** @return BelongsToMany<Badge, User> */
     public function badges(): BelongsToMany
     {
         return $this->belongsToMany(Badge::class, "badge_learner");
     }
 
-    /** @return BelongsToMany<Platform, Learner> */
+    /** @return BelongsToMany<Platform, User> */
     public function platforms(): BelongsToMany
     {
         return $this->belongsToMany(
             Platform::class,
-            "learner_platform_accounts",
+            "user_platform_accounts",
         )->withPivot("external_learner_id");
     }
 }

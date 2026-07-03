@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Learner;
+use App\Models\User;
 
 use function PHPUnit\Framework\throwException;
 
@@ -10,12 +10,12 @@ class LearnerService
 {
     private function findALearnerByEmail(string $email)
     {
-        return Learner::where("email", $email);
+        return User::where("email", $email);
     }
 
     private function findALearnerById(int $id)
     {
-        return Learner::find($id);
+        return User::find($id);
     }
 
     public function findALearner($data)

@@ -21,12 +21,12 @@ class EventService
 
     public function showAll(): Collection
     {
-        return BasicEvent::with(['platform', 'metricKey', 'eventType', 'learner'])->get();
+        return BasicEvent::with(['platform', 'metricKey', 'eventType', 'user'])->get();
     }
 
     public function showSpecificEvent(BasicEvent $event): BasicEvent
     {
-        return $event->load(['platform', 'metricKey', 'eventType', 'learner']);
+        return $event->load(['platform', 'metricKey', 'eventType', 'user']);
     }
 
     public function getByLearner(int $learnerId): Collection
@@ -39,7 +39,7 @@ class EventService
 
     public function getByMetricKey(string $metricKey): Collection
     {
-        return BasicEvent::with(['learner', 'platform'])
+        return BasicEvent::with(['user', 'platform'])
             ->whereHas('metricKey', fn ($q) => $q->where('name', $metricKey))
             ->orderByDesc('happened_at')
             ->get();

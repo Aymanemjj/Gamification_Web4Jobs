@@ -12,7 +12,10 @@ class DatabaseSeeder extends Seeder
             PlatformsSeeder::class,
             MetricKeysSeeder::class,
             EventTypeSeeder::class,
-            MetricKeySeeder::class
+            MetricKeySeeder::class,
+            RoleSeeder::class,
+            UserSeeder::class,
+            UserPlatformAccountSeeder::class
         ]);
     }
 }

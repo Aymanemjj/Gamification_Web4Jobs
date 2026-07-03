@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Http\Resources\BadgeResource;
 use App\Models\Badge;
-use App\Models\Learner;
+use App\Models\User;
 use Illuminate\Http\Response;
 use Illuminate\Http\JsonResponse;
 
@@ -58,7 +58,7 @@ class BadgeService
     }
 
     
-    public static function reCheck(Learner $learner): void{
+    public static function reCheck(User $learner): void{
 
         
         $learner->save();

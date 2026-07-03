@@ -9,7 +9,7 @@ class Group extends Model
 {
     protected $fillable = ["name"];
 
-    /** @return HasMany<Learner, Group> */
+    /** @return HasMany<User, Group> */
     public function users(): HasMany
     {
         return $this->hasMany(User::class);

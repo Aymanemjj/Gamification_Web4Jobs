@@ -35,7 +35,7 @@ Route::middleware("PlatformAuth")->group(function () {
     //Insertion platform
     Route::post("gamification/insertino/events", [
         InsertionPlatformEventController::class,
-        "handleSingleEvent",
+        "handleSingle",
     ])->name("events.insertionPlatform.single");
     Route::post("gamification/insertion/events", [
         InsertionPlatformEventController::class,

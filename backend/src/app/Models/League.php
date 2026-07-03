@@ -9,7 +9,7 @@ class League extends Model
 {
     protected $fillable = ["title", "color", "min_xp"];
 
-    /** @return HasMany<Learner, League> */
+    /** @return HasMany<User, League> */
     public function users(): HasMany
     {
         return $this->hasMany(User::class);

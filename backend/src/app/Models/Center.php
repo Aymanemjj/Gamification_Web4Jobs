@@ -9,8 +9,8 @@ class Center extends Model
 {
     protected $fillable = ["name", "location", "learner_count"];
 
-    /** @return HasMany<Learner, Center> */
-    public function learners(): HasMany
+    /** @return HasMany<User, Center> */
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }

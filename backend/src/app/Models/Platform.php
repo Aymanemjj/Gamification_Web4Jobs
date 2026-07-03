@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Learner;
+use App\Models\User;
 use App\Models\Events\BasicEvent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,12 +18,12 @@ class Platform extends Model
         return $this->hasMany(Event::class);
     }
 
-    /** @return BelongsToMany<Learner, Platform> */
-    public function learners(): BelongsToMany
+    /** @return BelongsToMany<User, Platform> */
+    public function users(): BelongsToMany
     {
         return $this->belongsToMany(
             User::class,
-            "learner_platform_accounts",
+            "user_platform_accounts",
         )->withPivot("external_learner_id");
     }
 }

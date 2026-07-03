@@ -15,11 +15,14 @@ class PointCalculationEngine
         $points = $self->getPoints($dto);
         ScoreTransaction::create([
             "attributed_points"=> $points,
-            "learner_id"=>$dto->learner->id,
+            "user_id"=>$dto->user->id,
         ]);
 
-        LeagueService::reCheck($dto->learner);
-        BadgeService::reCheck($dto->learner);
+        $dto->user->stats->xp += $points;
+        $dto->user->save();
+
+        LeagueService::reCheck($dto->user);
+        BadgeService::reCheck($dto->user);
     }
 
     private function getPoints(SourceEventDTOInterface $dto){

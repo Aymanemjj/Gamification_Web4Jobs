@@ -5,7 +5,7 @@ namespace App\DTOs;
 use App\Http\Requests\Web4JobsEventRequest;
 use App\Interfaces\BasicDtoInterface;
 use App\Models\EventType;
-use App\Models\Learner;
+use App\Models\User;
 use App\Models\MetricKey;
 use App\Models\Platform;
 
@@ -17,7 +17,7 @@ readonly class EventDTO implements BasicDtoInterface
         public EventType $eventType,
         public MetricKey $metricKey,
         public Platform $platform,
-        public Learner $learner,
+        public User $user,
     ) {}
 
     public static function make(array $data): self
@@ -28,7 +28,7 @@ readonly class EventDTO implements BasicDtoInterface
             eventType: EventType::where('type', $data['event_type'])->firstOrFail(),
             metricKey: MetricKey::where('name', $data['metric_key'])->firstOrFail(),
             platform: Platform::where('name', $data['source'])->firstOrFail(),
-            learner: Learner::where('email', $data['learner_email'])->firstOrFail(),
+            user: User::where('email', $data['learner_email'])->firstOrFail(),
         );
     }
 
@@ -45,7 +45,7 @@ readonly class EventDTO implements BasicDtoInterface
             'event_type_id' => $this->eventType->id,
             'metric_key_id' => $this->metricKey->id,
             'platform_id'   => $this->platform->id,
-            'learner_id'    => $this->learner->id,
+            'user_id'    => $this->user->id,
         ];
     }
 }

@@ -39,13 +39,13 @@ class InsertionPlatformSingleEventRequest extends FormRequest implements
                 "required",
                 "email",
                 "max:255",
-                Rule::exists("learners", "email"),
+                Rule::exists("users", "email"),
             ],
             "external_user_id" => [
                 "required",
                 "string",
                 "max:255",
-                Rule::exists("learner_platform_accounts", "external_id")->where(
+                Rule::exists("user_platform_accounts", "external_id")->where(
                     "platform_id",
                     $platform?->id,
                 ),
@@ -69,9 +69,9 @@ class InsertionPlatformSingleEventRequest extends FormRequest implements
             "source.in" => "Invalid event source.",
             "event_type.required" => "Event type is required.",
             "external_user_id.required" => "External user ID is required.",
-            "learner_email.required" => "Learner email is required.",
+            "learner_email.required" => "User email is required.",
             "learner_email.email" =>
-                "Learner email must be a valid email address.",
+                "User email must be a valid email address.",
             "metric_key.required" => "Metric key is required.",
             "value.required" => "Value is required.",
             "value.numeric" => "Value must be a number.",
@@ -99,6 +99,7 @@ class InsertionPlatformSingleEventRequest extends FormRequest implements
                         "message" => "Duplicate event ignored",
                         "data" => [
                             "dedupe_key" => $this->input("dedupe_key"),
+                            "errors"=> $errors,
                             "status" => "duplicate_ignored",
                         ],
                     ],
@@ -107,11 +108,13 @@ class InsertionPlatformSingleEventRequest extends FormRequest implements
             );
         }
 
+
         throw new HttpResponseException(
             response()->json(
                 [
                     "success" => false,
                     "message" => "Invalid request",
+                    "errors" => $errors,
                 ],
                 422,
             ),

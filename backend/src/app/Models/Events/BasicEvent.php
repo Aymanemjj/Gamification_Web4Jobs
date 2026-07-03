@@ -3,7 +3,7 @@
 namespace App\Models\Events;
 
 use App\Models\EventType;
-use App\Models\Learner;
+use App\Models\User;
 use App\Models\MetricKey;
 use App\Models\Platform;
 use Illuminate\Database\Eloquent\Model;
@@ -44,9 +44,9 @@ class BasicEvent extends Model
         return $this->belongsTo(EventType::class);
     }
 
-    /** @return BelongsTo<Learner, BasicEvent> */
-    public function learner(): BelongsTo
+    /** @return BelongsTo<User, BasicEvent> */
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Learner::class);
+        return $this->belongsTo(User::class);
     }
 }

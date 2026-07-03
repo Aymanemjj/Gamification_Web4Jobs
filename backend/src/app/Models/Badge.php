@@ -16,9 +16,9 @@ class Badge extends Model
         "wining_rules",
     ];
 
-    /** @return BelongsToMany<Learner, Badge> */
+    /** @return BelongsToMany<User, Badge> */
     public function winners(): BelongsToMany
     {
-        return $this->belongsToMany(Learner::class, "badge_learner");
+        return $this->belongsToMany(User::class, "badge_learner");
     }
 }

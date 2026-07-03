@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Http\Resources\LeagueResource;
 use App\Models\League;
-use App\Models\Learner;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Response;

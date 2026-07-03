@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\LearnerController;
 use App\Http\Requests\Web4JobsEventRequest;
-use App\Models\Learner;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\DTOs\EventDTO;
 

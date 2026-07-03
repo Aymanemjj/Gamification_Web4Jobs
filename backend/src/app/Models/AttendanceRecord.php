@@ -10,7 +10,7 @@ class AttendanceRecord extends Model
 {
     protected $fillable = ["attended", "center_id", "user_id"];
 
-    /** @return BelongsTo<Learner, AttendanceRecord> */
+    /** @return BelongsTo<User, AttendanceRecord> */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

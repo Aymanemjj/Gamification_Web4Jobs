@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api\PlatformControllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\EventRequests\InsertionPlatformSingleEventRequest;
 use App\Interfaces\SourceBatchEventRequestInterface;
 use App\Interfaces\SourceEventControllerInterface;
 use App\Interfaces\SourceSingleEventRequestInterface;
+use App\Services\EventService;
 use App\Services\SourcesServices\InsertionPlatformEventService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,15 +16,18 @@ use Illuminate\Http\Request;
 class InsertionPlatformEventController extends Controller implements
     SourceEventControllerInterface
 {
-    public function __construct(private InsertionPlatformEventService $insertionPlatformEventService){}
+    // private InsertionPlatformEventService $insertionPlatformEventService;
+    // public function __construct(){
+    //     $this->insertionPlatformEventService = new InsertionPlatformEventService(new EventService());
+    // }
 
     
-    public function handleSingle(SourceSingleEventRequestInterface $request): JsonResponse
+    public function handleSingle(InsertionPlatformSingleEventRequest $request): JsonResponse
     {
         try{
             $dto = $request->toDTO();
-
-            $event = $this->insertionPlatformEventService->handleSingle($dto);
+            $insertionPlatformEventService = new InsertionPlatformEventService(new EventService());
+            $event = $insertionPlatformEventService->handleSingle($dto);
 
             return response()->json([
                 'success' => true,
@@ -47,8 +52,9 @@ class InsertionPlatformEventController extends Controller implements
                 $dtos = $request->toDTOCollection(); 
                 
                 $results = [];
+                $insertionPlatformEventService = new InsertionPlatformEventService(new EventService());
                 foreach ($dtos as $dto) {
-                    $results[] = $this->insertionPlatformEventService->handleSingle($dto);
+                    $results[] = $insertionPlatformEventService->handleSingle($dto);
                 }
     
                 return response()->json([

@@ -40,13 +40,13 @@ class Web4JobsPlatformSingleEventRequest extends FormRequest implements
                 "required",
                 "email",
                 "max:255",
-                Rule::exists("learners", "email"),
+                Rule::exists("users", "email"),
             ],
             "external_user_id" => [
                 "required",
                 "string",
                 "max:255",
-                Rule::exists("learner_platform_accounts", "external_id")->where(
+                Rule::exists("user_platform_accounts", "external_id")->where(
                     "platform_id",
                     $platform?->id,
                 ),
@@ -74,9 +74,9 @@ class Web4JobsPlatformSingleEventRequest extends FormRequest implements
             "source.in" => "Invalid event source.",
             "event_type.required" => "Event type is required.",
             "external_user_id.required" => "External user ID is required.",
-            "learner_email.required" => "Learner email is required.",
+            "learner_email.required" => "User email is required.",
             "learner_email.email" =>
-                "Learner email must be a valid email address.",
+                "User email must be a valid email address.",
             "metric_key.required" => "Metric key is required.",
             "value.required" => "Value is required.",
             "value.numeric" => "Value must be a number.",
