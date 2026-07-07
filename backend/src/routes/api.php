@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\PlatformControllers\Web4JobsPlatformEventController
 use App\Http\Controllers\Api\PlatformControllers\ManualContributionEventController;
 use App\Http\Controllers\Api\CenterController;
 use App\Http\Controllers\Api\EventController;
+use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,14 +35,14 @@ Route::middleware("PlatformAuth")->group(function () {
     ])->name("events.manualContribution.batch");
 
     //Insertion platform
-    Route::post("gamification/insertino/events", [
+    Route::post("gamification/insertion/events", [
         InsertionPlatformEventController::class,
         "handleSingle",
     ])->name("events.insertionPlatform.single");
-    Route::post("gamification/insertion/events", [
+    Route::post("gamification/insertion/events/batch", [
         InsertionPlatformEventController::class,
-        "handleSingleEvent",
-    ])->name("events.InsertionPlatform.batch");
+        "handleBatch",
+    ])->name("events.insertionPlatform.batch");
 
     //Discord
     Route::post("gamification/forum/events", [
@@ -132,3 +133,9 @@ Route::put("gamification/centers/{id}/remove/{userId}", [
     CenterController::class,
     "removeUser",
 ])->name("centers.removeUser");
+
+
+Route::get("gamification/admin/users/getall", [
+    UserController::class,
+    "getAllUsers",
+])->name("users.list");

@@ -8,7 +8,6 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\Rule;
-use Override;
 
 class InsertionPlatformBatchEventRequest extends FormRequest implements
     SourceBatchEventRequestInterface
@@ -25,11 +24,12 @@ class InsertionPlatformBatchEventRequest extends FormRequest implements
             "insertion_platform",
         )->first();
 
-        $rules = [];
-
-        foreach ($this->all() as $index => $item) {
-            $rules["$index.source"] = "required|string|in:insertion_platform";
-            $rules["$index.event_type"] = [
+        return [
+            "source" => "required|string|in:insertion_platform",
+            "events" => "required|array|min:1",
+            
+            "events.*.source" => "required|string|in:insertion_platform",
+            "events.*.event_type" => [
                 "required",
                 "string",
                 "max:255",
@@ -37,14 +37,14 @@ class InsertionPlatformBatchEventRequest extends FormRequest implements
                     "platform_id",
                     $platform?->id,
                 ),
-            ];
-            $rules["$index.learner_email"] = [
+            ],
+            "events.*.learner_email" => [
                 "required",
                 "email",
                 "max:255",
                 Rule::exists("users", "email"),
-            ];
-            $rules["$index.external_user_id"] = [
+            ],
+            "events.*.external_user_id" => [
                 "required",
                 "string",
                 "max:255",
@@ -52,45 +52,42 @@ class InsertionPlatformBatchEventRequest extends FormRequest implements
                     "platform_id",
                     $platform?->id,
                 ),
-            ];
-            $rules["$index.metric_key"] =
-                "required|string|max:255|exists:metric_keys,name";
-            $rules["$index.value"] = "required|numeric";
-            $rules["$index.previous_value"] = "nullable|numeric";
-            $rules["$index.entity_type"] = "required|string|max:255";
-            $rules["$index.entity_id"] = "required|string|max:255";
-            $rules["$index.happened_at"] =
-                "required|date_format:Y-m-d\TH:i:s\Z";
-            $rules["$index.dedupe_key"] =
-                "required|string|max:500|unique:events,dedupe_key";
-
-            $rules["$index.metadata"] = "array";
-        }
-
-        return $rules;
+            ],
+            "events.*.metric_key" => "required|string|max:255|exists:metric_keys,name",
+            "events.*.value" => "required|numeric",
+            "events.*.previous_value" => "nullable|numeric",
+            "events.*.entity_type" => "required|string|max:255",
+            "events.*.entity_id" => "required|string|max:255",
+            "events.*.happened_at" => "required|date_format:Y-m-d\TH:i:s\Z",
+            "events.*.dedupe_key" => "required|string|max:500|unique:events,dedupe_key",
+            "events.*.metadata" => "array",
+        ];
     }
 
     public function messages(): array
     {
         return [
-            "*.source.required" => "Event source is required.",
-            "*.source.in" => "Invalid event source.",
-            "*.event_type.required" => "Event type is required.",
-            "*.external_user_id.required" => "External user ID is required.",
-            "*.learner_email.required" => "User email is required.",
-            "*.learner_email.email" =>
-                "User email must be a valid email address.",
-            "*.metric_key.required" => "Metric key is required.",
-            "*.value.required" => "Value is required.",
-            "*.value.numeric" => "Value must be a number.",
-            "*.previous_value.numeric" => "Previous value must be a number.",
-            "*.entity_type.required" => "Entity type is required.",
-            "*.entity_id.required" => "Entity ID is required.",
-            "*.happened_at.required" => "Event timestamp is required.",
-            "*.happened_at.date_format" =>
-                "Timestamp must be ISO 8601 format (e.g. 2026-05-21T14:30:00Z).",
-            "*.dedupe_key.required" => "Dedupe key is required.",
-            "*.metadata.array" => "Metadata must be an object.",
+            "source.required" => "Top-level event source is required.",
+            "source.in" => "Invalid top-level event source.",
+            "events.required" => "The events batch array is required.",
+            
+            "events.*.source.required" => "Event source is required.",
+            "events.*.source.in" => "Invalid event source.",
+            "events.*.event_type.required" => "Event type is required.",
+            "events.*.external_user_id.required" => "External user ID is required.",
+            "events.*.learner_email.required" => "User email is required.",
+            "events.*.learner_email.email" => "User email must be a valid email address.",
+            "events.*.metric_key.required" => "Metric key is required.",
+            "events.*.value.required" => "Value is required.",
+            "events.*.value.numeric" => "Value must be a number.",
+            "events.*.previous_value.numeric" => "Previous value must be a number.",
+            "events.*.entity_type.required" => "Entity type is required.",
+            "events.*.entity_id.required" => "Entity ID is required.",
+            "events.*.happened_at.required" => "Event timestamp is required.",
+            "events.*.happened_at.date_format" => "Timestamp must be ISO 8601 format (e.g. 2026-05-21T14:30:00Z).",
+            "events.*.dedupe_key.required" => "Dedupe key is required.",
+            "events.*.dedupe_key.unique" => "One or more events in this batch are duplicates.",
+            "events.*.metadata.array" => "Metadata must be an object.",
         ];
     }
 
@@ -110,7 +107,15 @@ class InsertionPlatformBatchEventRequest extends FormRequest implements
 
     public function toDTOCollection(): array
     {
-        $data = $this->validated();
-        return InsertionPlatformEventDTO::collection($data);
+        $validatedData = $this->validated();
+        
+        // Extract the nested events array from the validated output
+        $events = $validatedData['events'] ?? [];
+
+        // If your DTO supports a native collection handler:
+        return InsertionPlatformEventDTO::collection($events);
+
+        // NOTE: If InsertionPlatformEventDTO::collection() errors out, map it manually like this:
+        // return array_map(fn($item) => InsertionPlatformEventDTO::make($item), $events);
     }
 }
