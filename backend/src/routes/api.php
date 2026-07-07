@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware("PlatformAuth")->group(function () {
-
     //W4J
     Route::post("gamification/web4jobs/events", [
         Web4JobsPlatformEventController::class,
@@ -56,7 +55,7 @@ Route::middleware("PlatformAuth")->group(function () {
     Route::post("gamification/forum/daily-stats", [
         DiscordEventController::class,
         "handleDailyEvent",
-    ])->name("events.forumEvent.daily");   
+    ])->name("events.forumEvent.daily");
 
     //Certification Platform
     Route::post("gamification/certifications/events", [
@@ -70,15 +69,14 @@ Route::middleware("PlatformAuth")->group(function () {
 
     //Center
     Route::post("gamification/attendance/events", [
-       AttendanceCenterEventController::class,
+        AttendanceCenterEventController::class,
         "handleEventBatch",
-    ])->name("events.attendance.single");   
+    ])->name("events.attendance.single");
     Route::post("gamification/attendance/events/batch", [
         AttendanceCenterEventController::class,
         "handleEventBatch",
     ])->name("events.attendance.batch");
 });
-
 
 Route::put("gamification/events/{id}/status", [
     EventController::class,
@@ -100,20 +98,18 @@ Route::get("gamification/events/{id}", [
     "getEventById",
 ])->name("events.get");
 
-Route::get("gamification/centers", [
-    CenterController::class,
-    "index",
-])->name("centers.list");
+Route::get("gamification/centers", [CenterController::class, "index"])->name(
+    "centers.list",
+);
 
 Route::get("gamification/centers/{id}", [
     CenterController::class,
     "show",
 ])->name("centers.get");
 
-Route::post("gamification/centers", [
-    CenterController::class,
-    "create",
-])->name("centers.create");
+Route::post("gamification/centers", [CenterController::class, "create"])->name(
+    "centers.create",
+);
 
 Route::put("gamification/centers/{id}", [
     CenterController::class,
@@ -135,7 +131,25 @@ Route::put("gamification/centers/{id}/remove/{userId}", [
 ])->name("centers.removeUser");
 
 
+//Users
 Route::get("gamification/admin/users/getall", [
     UserController::class,
     "getAllUsers",
 ])->name("users.list");
+
+Route::put("gamification/admin/users/{user}/change-role", [
+    UserController::class,
+    "changeRole",
+])->name("users.changeRole");
+
+Route::put("gamification/admin/users/{user}/togle-active", [
+    UserController::class,
+    "toggleActive",
+])->name("users.toggleActive");
+
+
+//Roles
+Route::get("gamification/admin/roles/getall",[
+RoleController::class,
+'getAllRoles'
+])->name("roles.getAll");
