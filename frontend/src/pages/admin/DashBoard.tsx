@@ -1,6 +1,9 @@
 import {FiUsers, FiStar, FiAward, FiZap} from "react-icons/fi";
 import {type OverviewCardItem} from "../../types.ts"
 import OverviewCard from "../../components/OverviewCard";
+import { FetchUsers } from "../../services/UserService";
+import Table from "../../components/Table.tsx";
+
 
 const Overview: OverviewCardItem[] = [
     { title: "Total Learners", icon: <FiUsers />, primary: 2840, secondary: "12% this week", status: true, color: "text-blue-500" },
@@ -11,17 +14,29 @@ const Overview: OverviewCardItem[] = [
 
 
 export default function Dashboard() {
-    return (
+  const { data, loading, error } = FetchUsers();
+
+  return (
+    <div>
         <div className="p-8 space-y-6">
-            <div className="flex gap-4 ">
-                {Overview.map((i, n)=>(
-                    <OverviewCard item={i} key={n} />
-                ))}
-            </div>
-            
-            <div>
-              
-            </div>
+          <div className="flex gap-4">
+            {Overview.map((i, n) => (
+              <OverviewCard item={i} key={n} />
+            ))}
+          </div>
+
+        <div>
+          {
+            loading && <p>Loading...</p>
+          }
+          {
+            error && <p>Error: {error}</p>  
+          }
+          {
+            data && <Table table={data} />
+          }
+          </div>
         </div>
-    )
+    </div>
+  ); 
 }
