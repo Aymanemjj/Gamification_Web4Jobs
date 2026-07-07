@@ -30,6 +30,7 @@ export default function Table({ table }: { table: Row[] }) {
           <tr>
             <th className="text-left p-4 font-normal">USER</th>
             <th className="text-left p-4 font-normal">EMAIL</th>
+            <th className="text-left p-4 font-normal">ROLE</th>
             <th className="text-left p-4 font-normal">Actions</th>
           </tr>
         </thead>
@@ -38,13 +39,14 @@ export default function Table({ table }: { table: Row[] }) {
             <tr key={r.id} className="border-b dark:border-bg-dark-hover border-gray-100">
               <td className="p-4 font-medium dark:text-white">{r.name}</td>
               <td className="p-4 dark:text-white">{r.email}</td>
+              <td className="p-4 dark:text-white">{r.role}</td>
               <td className="p-4 dark:text-white">
                 <div className="flex gap-2">
                   <button className="p-2 bg-red-600 rounded-md cursor-pointer hover:bg-red-700 text-white">
                     {r.active ? "Ban" : "Unban"}
                   </button>
                   <button className="p-2 bg-yellow-600 rounded-md cursor-pointer hover:bg-yellow-700 text-white">
-                    Promote
+                    Change role
                   </button>
                 </div>
               </td>

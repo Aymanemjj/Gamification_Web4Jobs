@@ -22,3 +22,12 @@ export function FetchUsers() {
 
     return { data, loading, error };
 }
+
+
+export function changeUserRole(user: string, role: string) {
+  return  axiosClient.put(`/admin/users/${user}/promote`, { role })
+}
+
+export function toggleActive(user: string) {
+  return axiosClient.put(`/admin/users/${user}/`)
+}
