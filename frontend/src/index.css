@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
 @theme {
     --color-primary-hover: #6C52E0;
     --color-primary-normal: #5B3FD6;
@@ -7,7 +9,7 @@
     --color-muted:#7F7F7F;
     --color-border:#e5e5e5;
     --color-bg-light: #F7F5FF;
-    --color-bg-light-hover:#F7F5FF;
+    --color-bg-light-hover:white;
 
     --color-bg-dark: #1E1E1E;
     --color-bg-dark-hover:#171717;
@@ -17,7 +19,16 @@
     --text-large: 32px;
     --text-medium: 24px;
     --text-small: 16px;
-    --text-smaller: 14px
+    --text-smaller: 14px;
+
+    --font-sans: "Inter", system-ui, -apple-system, sans-serif;
 }
 
 @variant dark (&:where(.dark, .dark *));
+
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+  }
+}

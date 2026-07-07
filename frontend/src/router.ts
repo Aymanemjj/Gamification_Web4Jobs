@@ -7,9 +7,9 @@ import Achievements from "./pages/normal/Achievements.tsx";
 import League from "./pages/normal/League.tsx";
 import Progress from "./pages/normal/Progress.tsx";
 import Rewards from "./pages/normal/Rewards.tsx";
-
 import AdminLayout from "./layouts/AdminLayout.tsx";
 import DashBoard from "./pages/admin/DashBoard.tsx"
+import LoginPage from "./pages/LoginPage.tsx";
 
 const router = createBrowserRouter([
     {
@@ -35,7 +35,11 @@ const router = createBrowserRouter([
 
 
         ]
-    }
+  },
+  {
+    path: "/login",
+    Component: LoginPage,
+  },
 ]);
 
 
