@@ -23,10 +23,9 @@ class User extends Model
     protected $fillable = [
         "firstname",
         "lastname",
-        "age",
         "email",
         "password",
-        "role",
+        "role_id",
         "active",
     ];
 
@@ -34,7 +33,11 @@ class User extends Model
     {
         return $this->belongsTo(Role::class);
     }
-
+    public function isAdmin(): bool
+    {
+        return $this->role_id === Role::where("name", "super_admin")->first()->id;
+    }
+    
     public function stats(): HasOne
     {
         return $this->hasOne(UserStats::class);

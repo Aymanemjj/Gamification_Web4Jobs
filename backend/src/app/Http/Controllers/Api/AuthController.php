@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\Auth;
+namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
@@ -25,7 +25,7 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
         try {
-            $dto = $request->validated();
+            $dto = $request->toDto();
             return $this->AuthService->login($dto);
         } catch (Exception $e) {
             return response()->json([
@@ -47,4 +47,17 @@ class AuthController extends Controller
             ], 500);
         }
     }
+
+    public function infoZustland(Request $request)
+    {
+        try {
+            return $this->AuthService->infoZustland($request);
+        } catch (Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    
 }

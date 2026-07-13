@@ -25,8 +25,7 @@ class UserService
             $user->update([
                 "role" => $role->id,
             ]);
-            return $user
-
+            return $user;
     }
 
     public function toggleActive(User $user) : User
@@ -35,7 +34,7 @@ class UserService
             $user->update([
                 "active" => !$user->active,
             ]);
-            return $user
+            return $user;
     }
     
 

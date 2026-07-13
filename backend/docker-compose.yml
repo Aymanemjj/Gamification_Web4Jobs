@@ -58,6 +58,20 @@ services:
     networks:
       - laravel_network
 
+  # External Auth Mock Service
+  auth_mock:
+    image: node:alpine
+    container_name: laravel_auth_mock
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./auth-api.js:/app/auth-api.js
+    working_dir: /app
+    command: node auth-api.js
+    networks:
+      - laravel_network
+
 networks:
   laravel_network:
     driver: bridge

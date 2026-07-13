@@ -9,6 +9,8 @@ use App\Http\Controllers\Api\PlatformControllers\ManualContributionEventControll
 use App\Http\Controllers\Api\CenterController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -78,78 +80,109 @@ Route::middleware("PlatformAuth")->group(function () {
     ])->name("events.attendance.batch");
 });
 
-Route::put("gamification/events/{id}/status", [
+Route::put("gamification/admin/events/{id}/status", [
     EventController::class,
     "updateStatus",
 ])->name("events.status.update");
 
-Route::delete("gamification/events/{id}", [
+Route::delete("gamification/admin/events/{id}", [
     EventController::class,
     "delete",
 ])->name("events.delete");
 
-Route::get("gamification/events", [
+Route::get("gamification/admin/events", [
     EventController::class,
     "getAllEvents",
 ])->name("events.list");
 
-Route::get("gamification/events/{id}", [
+Route::get("gamification/admin/events/{id}", [
     EventController::class,
     "getEventById",
 ])->name("events.get");
 
-Route::get("gamification/centers", [CenterController::class, "index"])->name(
+Route::get("gamification/admin/centers", [CenterController::class, "index"])->name(
     "centers.list",
 );
 
-Route::get("gamification/centers/{id}", [
+Route::get("gamification/admin/centers/{id}", [
     CenterController::class,
     "show",
 ])->name("centers.get");
 
-Route::post("gamification/centers", [CenterController::class, "create"])->name(
+Route::post("gamification/admin/centers", [CenterController::class, "create"])->name(
     "centers.create",
 );
 
-Route::put("gamification/centers/{id}", [
+Route::put("gamification/admin/centers/{id}", [
     CenterController::class,
     "update",
 ])->name("centers.update");
 
-Route::delete("gamification/centers/{id}", [
+Route::delete("gamification/admin/centers/{id}", [
     CenterController::class,
     "delete",
 ])->name("centers.delete");
 
-Route::put("gamification/centers/{id}/add/{userId}", [
+Route::put("gamification/admin/centers/{id}/add/{userId}", [
     CenterController::class,
     "addUser",
 ])->name("centers.addUser");
-Route::put("gamification/centers/{id}/remove/{userId}", [
+Route::put("gamification/admin/centers/{id}/remove/{userId}", [
     CenterController::class,
     "removeUser",
 ])->name("centers.removeUser");
 
 
-//Users
-Route::get("gamification/admin/users/getall", [
-    UserController::class,
-    "getAllUsers",
-])->name("users.list");
-
-Route::put("gamification/admin/users/{user}/change-role", [
-    UserController::class,
-    "changeRole",
-])->name("users.changeRole");
-
-Route::put("gamification/admin/users/{user}/togle-active", [
-    UserController::class,
-    "toggleActive",
-])->name("users.toggleActive");
 
 
-//Roles
-Route::get("gamification/admin/roles/getall",[
-RoleController::class,
-'getAllRoles'
-])->name("roles.getAll");
+
+/**
+ * Authenticated routes
+ */
+Route::middleware("auth:sanctum")->group(function () {
+    //Auth
+    Route::post("/login", [AuthController::class, "login"])->name("auth.login");
+
+    Route::post("/logout", [AuthController::class, "logout"])->name(
+        "auth.logout",
+    );
+
+    Route::get("/info-zustland", [AuthController::class, "infoZustland"])->name(
+        "auth.infoZustland",
+    );
+
+
+
+    
+    /**
+     * Admin routes
+     */
+    Route::middleware("isAdmin")->group(function () {
+        //Users
+        Route::get("gamification/admin/users/getall", [
+            UserController::class,
+            "getAllUsers",
+        ])->name("users.list");
+
+        Route::put("gamification/admin/users/{user}/change-role", [
+            UserController::class,
+            "changeRole",
+        ])->name("users.changeRole");
+
+        Route::put("gamification/admin/users/{user}/togle-active", [
+            UserController::class,
+            "toggleActive",
+        ])->name("users.toggleActive");
+
+        //Roles
+        Route::get("gamification/admin/roles/getall", [
+            RoleController::class,
+            "getAllRoles",
+        ])->name("roles.getAll");
+
+        Route::post("gamification/admin/roles", [
+            RoleController::class,
+            "create",
+        ])->name("roles.create");
+    });
+});

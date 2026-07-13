@@ -11,7 +11,7 @@ class LoginDTO implements BasicDtoInterface, JsonSerializable
      * Create a new class instance.
      */
     public function __construct(
-        public string $username,
+        public string $email,
         public string $password,
     ) {}
     
@@ -23,7 +23,7 @@ class LoginDTO implements BasicDtoInterface, JsonSerializable
     public function toArray(): array
     {
         return [
-            'username' => $this->username,
+            'email' => $this->email,
             'password' => $this->password,
         ];
     }
@@ -31,7 +31,7 @@ class LoginDTO implements BasicDtoInterface, JsonSerializable
     public static function make(array $data): self
     {
         return new self(
-            $data['username'],
+            $data['email'],
             $data['password'],
         );
     }

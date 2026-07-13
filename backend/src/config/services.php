@@ -35,6 +35,6 @@ return [
         ],
     ],
     'w4jauth' => [
-            'url' => env('W4JAUTH_API_URL'),
+            'login_url' => env('W4J_AUTH_URL'),
     ],
 ];

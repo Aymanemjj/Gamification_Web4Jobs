@@ -13,7 +13,7 @@ class RoleSeeder extends Seeder
             ['name' => 'learner', 'permissions' => '[]'],               // Apprenants
             ['name' => 'center_manager', 'permissions' => '[]'],       // Responsables de centre
             ['name' => 'product_pedagogical_team', 'permissions' => '[]'], // Équipe produit / pédagogique
-            ['name' => 'superAdmin', 'permissions' => '*'],            // Administrateurs
+            ['name' => 'super_admin', 'permissions' => '*'],            // Administrateurs
         ];
 
         foreach ($roles as $role) {

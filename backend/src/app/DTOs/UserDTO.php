@@ -8,10 +8,8 @@ use JsonSerializable;
 readonly class UserDTO implements BasicDtoInterface, JsonSerializable
 {
     public function __construct(
-        public int    $id,
         public string $firstname,
         public string $lastname,
-        public int    $age,
         public string $email,
         public string $role,
     ) {}
@@ -19,10 +17,8 @@ readonly class UserDTO implements BasicDtoInterface, JsonSerializable
     public static function make(array $data): static
     {
         return new self(
-            id:        $data['id'],
             firstname: $data['firstname'],
             lastname:  $data['lastname'],
-            age:       $data['age'],
             email:     $data['email'],
             role:      $data['role'],
         );
@@ -36,10 +32,8 @@ readonly class UserDTO implements BasicDtoInterface, JsonSerializable
     public function toArray(): array
     {
         return [
-            'id'        => $this->id,
             'firstname' => $this->firstname,
             'lastname'  => $this->lastname,
-            'age'       => $this->age,
             'email'     => $this->email,
             'role'      => $this->role,
         ];

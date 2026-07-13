@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
         $faker = Faker::create();
 
         // Fetch the role IDs safely from the database
-        $superAdminRoleId = DB::table('roles')->where('name', 'superAdmin')->value('id');
+        $superAdminRoleId = DB::table('roles')->where('name', 'super_admin')->value('id');
         $learnerRoleId = DB::table('roles')->where('name', 'learner')->value('id');
 
         // 1. Insert 1 Super Admin
@@ -25,7 +25,6 @@ class UserSeeder extends Seeder
                 'firstname' => 'Admin',
                 'lastname' => 'User',
                 'email_verified_at' => now(),
-                'password' => Hash::make('password123'), // Securely hashed default password
                 'active' => 1,
                 'role_id' => $superAdminRoleId,
                 'remember_token' => Str::random(10),
@@ -42,7 +41,6 @@ class UserSeeder extends Seeder
                 'lastname' => $faker->lastName,
                 'email' => $faker->unique()->safeEmail,
                 'email_verified_at' => now(),
-                'password' => Hash::make('password'), // default password for testing
                 'active' => 1, // 1 = Active
                 'role_id' => $learnerRoleId,
                 'remember_token' => Str::random(10),
