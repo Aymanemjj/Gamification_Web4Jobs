@@ -9,10 +9,14 @@ use App\Http\Controllers\Api\PlatformControllers\ManualContributionEventControll
 use App\Http\Controllers\Api\CenterController;
 use App\Http\Controllers\Api\EventController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\MetricKeyController;
+use App\Http\Controllers\Api\RoleController;
+use App\Http\Controllers\Api\LeaderBoardController;
+
 
 Route::middleware("PlatformAuth")->group(function () {
     //W4J
@@ -100,18 +104,20 @@ Route::get("gamification/admin/events/{id}", [
     "getEventById",
 ])->name("events.get");
 
-Route::get("gamification/admin/centers", [CenterController::class, "index"])->name(
-    "centers.list",
-);
+Route::get("gamification/admin/centers", [
+    CenterController::class,
+    "index",
+])->name("centers.list");
 
 Route::get("gamification/admin/centers/{id}", [
     CenterController::class,
     "show",
 ])->name("centers.get");
 
-Route::post("gamification/admin/centers", [CenterController::class, "create"])->name(
-    "centers.create",
-);
+Route::post("gamification/admin/centers", [
+    CenterController::class,
+    "create",
+])->name("centers.create");
 
 Route::put("gamification/admin/centers/{id}", [
     CenterController::class,
@@ -134,26 +140,37 @@ Route::put("gamification/admin/centers/{id}/remove/{userId}", [
 
 
 
-
+//Login
+Route::post("gamification/login", [AuthController::class, "login"])->name("auth.login");
 
 /**
  * Authenticated routes
  */
 Route::middleware("auth:sanctum")->group(function () {
+    
     //Auth
-    Route::post("/login", [AuthController::class, "login"])->name("auth.login");
-
-    Route::post("/logout", [AuthController::class, "logout"])->name(
+    Route::post("gamification/logout", [AuthController::class, "logout"])->name(
         "auth.logout",
     );
-
-    Route::get("/info-zustland", [AuthController::class, "infoZustland"])->name(
+    Route::get("gamification/info-zustland", [AuthController::class, "infoZustland"])->name(
         "auth.infoZustland",
     );
 
+    Route::get("gamification/leaderboard/alltime", [
+        LeaderBoardController::class,
+        "getAllTimeLeaderboard",
+    ])->name("leaderboard.allTime");
 
+    Route::get("gamification/leaderboard/weekly", [
+        LeaderBoardController::class,
+        "getWeeklyLeaderboard",
+    ])->name("leaderboard.weekly");
 
-    
+    Route::get("gamification/leaderboard/monthly", [
+        LeaderBoardController::class,
+        "getMonthlyLeaderboard",
+    ])->name("leaderboard.monthly");
+
     /**
      * Admin routes
      */
@@ -182,7 +199,51 @@ Route::middleware("auth:sanctum")->group(function () {
 
         Route::post("gamification/admin/roles", [
             RoleController::class,
-            "create",
+            "createRole",
         ])->name("roles.create");
+
+        Route::put("gamification/admin/roles/{id}", [
+            RoleController::class,
+            "updateRole",
+        ])->name("roles.update");
+
+        Route::delete("gamification/admin/roles/{id}", [
+            RoleController::class,
+            "deleteRole",
+        ])->name("roles.delete");
+
+        
+        //AdminStats
+        Route::get('gamification/admin/basic-stats', [
+        AdminController::class,
+        "basicStats"
+        ])->name("admin.basicStats");
+
+        //MetricKeys
+        Route::get("gamification/admin/metric-keys/getall", [
+            MetricKeyController::class,
+            "getAllMetricKeys",
+        ])->name("metric-keys.getAll");
+
+        Route::get("gamification/admin/metric-keys/{id}", [
+            MetricKeyController::class,
+            "getMetricKeyById",
+        ])->name("metric-keys.get");
+        
+
+        Route::post("gamification/admin/metric-keys", [
+            MetricKeyController::class,
+            "createMetricKey",
+        ])->name("metric-keys.create");
+
+        Route::put("gamification/admin/metric-keys/{id}", [
+            MetricKeyController::class,
+            "updateMetricKey",
+        ])->name("metric-keys.update");
+
+        Route::delete("gamification/admin/metric-keys/{id}", [
+            MetricKeyController::class,
+            "deleteMetricKey",
+        ])->name("metric-keys.delete");
     });
 });

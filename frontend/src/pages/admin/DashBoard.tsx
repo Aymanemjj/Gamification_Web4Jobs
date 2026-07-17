@@ -1,7 +1,7 @@
 import {FiUsers, FiStar, FiAward, FiZap} from "react-icons/fi";
-import {type OverviewCardItem} from "../../types.ts"
+import type { OverviewCardItem } from "../../types.ts";
 import OverviewCard from "../../components/OverviewCard";
-import { FetchUsers } from "../../services/UserService";
+import { FetchUsers } from "../../services/useUserService.ts";
 import Table from "../../components/Table.tsx";
 
 
@@ -18,25 +18,25 @@ export default function Dashboard() {
 
   return (
     <div>
-        <div className="p-8 space-y-6">
-          <div className="flex gap-4">
-            {Overview.map((i, n) => (
-              <OverviewCard item={i} key={n} />
-            ))}
-          </div>
+      <div className="p-8 space-y-6">
+        <div className="flex gap-4">
+          {Overview.map((i, n) => (
+            <OverviewCard item={i} key={n} />
+          ))}
+        </div>
 
         <div>
           {
             loading && <p>Loading...</p>
           }
           {
-            error && <p>Error: {error}</p>  
+            error && <p>Error: {error}</p>
           }
           {
             data && <Table table={data} />
           }
-          </div>
         </div>
+      </div>
     </div>
-  ); 
+  );
 }

@@ -1,17 +1,18 @@
 import { useState, useEffect } from "react";
 import { FiMail, FiLock, FiSun, FiMoon } from "react-icons/fi";
+import { useLogin } from "../services/useAuthService";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   // --- Initialize state based on whether 'dark' is already on the html tag ---
-  const [isDark, setIsDark] = useState(() => 
-    document.documentElement.classList.contains("dark")
+  const [isDark, setIsDark] = useState(() =>
+    document.documentElement.classList.contains("dark"),
   );
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
+  const { login, loading, errorMessage } = useLogin();
   // --- Watch isDark changes and update the <html> tag ---
   useEffect(() => {
     if (isDark) {
@@ -21,23 +22,20 @@ export default function LoginPage() {
     }
   }, [isDark]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrorMessage("");
-    setLoading(true);
 
-    setTimeout(() => {
-      setLoading(false);
-      if (!email || !password) {
-        setErrorMessage("Please fill in all mandatory fields.");
-      }
-    }, 1200);
+    try {
+      await login({ email, password });
+      navigate("/");
+    } catch {
+      // errorMessage is already updated by the hook
+    }
   };
-
+  
   return (
     /* Page Container (Cleaned up the theme wrapper wrapper) */
     <div className="flex min-h-screen items-center justify-center bg-bg-light p-6 transition-colors duration-300 dark:bg-bg-dark-hover">
-      
       {/* Theme Toggle Switch */}
       <button
         onClick={() => setIsDark(!isDark)}
@@ -45,7 +43,11 @@ export default function LoginPage() {
         className="absolute top-6 right-6 p-2 rounded-lg  bg-primary-normal dark:bg-primary-normal text-gray-600 dark:text-zinc-400 cursor-pointer hover:bg-primary-hover dark:hover:bg-primary-hover transition-all"
         aria-label="Toggle Theme"
       >
-        {isDark ? <FiSun className="w-5 h-5 text-white" /> : <FiMoon className="w-5 h-5 text-white" />}
+        {isDark ? (
+          <FiSun className="w-5 h-5 text-white" />
+        ) : (
+          <FiMoon className="w-5 h-5 text-white" />
+        )}
       </button>
 
       {/* Login Card */}
@@ -55,7 +57,7 @@ export default function LoginPage() {
             Welcome back
           </h2>
           <p className="mt-2 text-sm text-gray-500 dark:text-zinc-400">
-            Enter your credentials to access your management dashboard
+            Enter your credentials to access the leaderboard
           </p>
         </div>
 

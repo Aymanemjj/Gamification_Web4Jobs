@@ -17,6 +17,7 @@ export type AdminUserManagementTableRow = {
   id: number;
   name: string;
   email: string;
+  role: string;
   active: boolean;
 };
 
@@ -37,3 +38,8 @@ export type OverviewCardItem = {
   status: boolean;
   color: string;
 };
+
+export type LoginData = {
+  email: string;
+  password: string;
+}

@@ -1,23 +1,18 @@
 <?php
-
 namespace Database\Seeders;
-
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Faker\Factory as Faker;
-
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
         $faker = Faker::create();
-
         // Fetch the role IDs safely from the database
         $superAdminRoleId = DB::table('roles')->where('name', 'super_admin')->value('id');
         $learnerRoleId = DB::table('roles')->where('name', 'learner')->value('id');
-
         // 1. Insert 1 Super Admin
         DB::table('users')->updateOrInsert(
             ['email' => 'admin@web4jobs.com'], // Unique check
@@ -32,7 +27,6 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ]
         );
-
         // 2. Insert 20 Fake Learners
         $learners = [];
         for ($i = 0; $i < 20; $i++) {
@@ -48,10 +42,23 @@ class UserSeeder extends Seeder
                 'updated_at' => now(),
             ];
         }
-
         // Chunk insert for database efficiency
         foreach (array_chunk($learners, 10) as $chunk) {
             DB::table('users')->insert($chunk);
         }
+
+        // 3. Create empty user_stats rows for all learners missing one
+        DB::table('users')
+            ->where('role_id', $learnerRoleId)
+            ->whereNotIn('id', DB::table('user_stats')->pluck('user_id'))
+            ->pluck('id')
+            ->chunk(10)
+            ->each(function ($ids) {
+                $rows = $ids->map(fn ($id) => [
+                    'user_id' => $id,
+                ])->toArray();
+
+                DB::table('user_stats')->insert($rows);
+            });
     }
 }

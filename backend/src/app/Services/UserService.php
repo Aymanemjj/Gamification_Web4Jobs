@@ -23,7 +23,7 @@ class UserService
             $role = Role::where("name", $request->role)->first();
     
             $user->update([
-                "role" => $role->id,
+                "role_id" => $role->id,
             ]);
             return $user;
     }

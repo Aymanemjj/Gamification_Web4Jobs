@@ -24,10 +24,12 @@ export function FetchUsers() {
 }
 
 
-export function changeUserRole(user: string, role: string) {
-  return  axiosClient.put(`/admin/users/${user}/promote`, { role })
+export function changeUserRole(user: number, role: string) {
+  return axiosClient.put(`/admin/users/${user}/change-role`, { role })
 }
 
-export function toggleActive(user: string) {
-  return axiosClient.put(`/admin/users/${user}/`)
+export function toggleActive(user: number) {
+  return axiosClient.put(`/admin/users/${user}/toggle-active`)
 }
+
+

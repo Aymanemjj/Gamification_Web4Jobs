@@ -1,7 +1,7 @@
 import { create } from "zustand";
+import axiosClient from "../axios";
 
 interface AuthUser {
-  id: number;
   firstName: string;
   lastName: string;
   email: string;
@@ -12,25 +12,66 @@ interface AuthUser {
 interface AuthState {
   user: AuthUser | null;
   isAuthenticated: boolean;
-  setUser: (user: AuthUser | null) => void;
+  isLoading: boolean;
+
+  initialize: () => Promise<void>;
   logout: () => void;
+  setUser: (user: AuthUser | null) => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
-  // Core State (Initial values)
-    user: null,
-    isAuthenticated: false,
+  user: null,
+  isAuthenticated: false,
+  isLoading: false,
+
+  setUser: (user) =>
+    set({
+      user,
+      isAuthenticated: !!user,
+    }),
+
+  logout: () => {
+    localStorage.removeItem("credentials");
+
+    set({
+      user: null,
+      isAuthenticated: false,
+    });
+  },
+
+  initialize: async () => {
+    console.log("initialize started");
   
-    // Actions (Mutations / Methods)
-    setUser: (userData) => 
-      set({ 
-        user: userData, 
-        isAuthenticated: true 
-      }),
+    const token = localStorage.getItem("credentials");
+    console.log("token", token);
   
-    logout: () => 
-      set({ 
-        user: null, 
-        isAuthenticated: false 
-      }),
-}))
+    if (!token) {
+      console.log("no token");
+      set({
+        user: null,
+        isAuthenticated: false,
+        isLoading: false,
+      });
+      return;
+    }
+  
+    set({ isLoading: true });
+  
+    try {
+      const response = await axiosClient.get("/info-zustland");
+  
+      console.log("response", response.data);
+  
+      set({
+        user: response.data.data.user,
+        isAuthenticated: true,
+      });
+  
+      console.log("after set", useAuthStore.getState());
+    } catch (e) {
+      console.error(e);
+    } finally {
+      set({ isLoading: false });
+    }
+  }
+}));

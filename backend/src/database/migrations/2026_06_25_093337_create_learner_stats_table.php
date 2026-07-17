@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('user_stats', function (Blueprint $table) {
             $table->foreignId('user_id')->constrained();
-            $table->integer('xp');
-            $table->foreignId("league_id")->constrained();
-            $table->foreignId("group_id")->nullable()->constrained();
-            $table->foreignId("center_id")->nullable()->constrained();
+            $table->integer('xp')->default(0);
+            $table->foreignId("league_id")->nullable()->constrained()->default(null);
+            $table->foreignId("group_id")->nullable()->constrained()->default(null);
+            $table->foreignId("center_id")->nullable()->constrained()->default(null);
         });
     }
 
